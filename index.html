@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPark | Parking Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">P</div><div><strong>SmartPark</strong><small>Parking Management</small></div></div>  
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav-item active" data-page="dashboard"><span>▦</span> Dashboard</button>
+    <button class="nav-item" data-page="entry"><span>＋</span> Vehicle Entry</button>
+    <button class="nav-item" data-page="exit"><span>↗</span> Exit & Billing</button>
+    <button class="nav-item" data-page="vehicles"><span>▤</span> Vehicle Records</button>
+    <button class="nav-item" data-page="reports"><span>▥</span> Reports</button>
+    <div class="sidebar-bottom">
+      <span class="status-dot" id="system-dot"></span>
+      <div>
+        <strong id="system-status-title">System Connected</strong>
+        <small id="system-status-desc">Doubly Linked List Engine</small>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><div class="eyebrow">PARKING OPERATIONS</div><h1 id="page-title">Dashboard</h1></div>
+      <div class="top-actions"><span class="demo-pill" id="demo-pill">LIVE ENGINE</span><div class="avatar">SP</div></div>
+    </header>
+
+    <section class="page active" id="page-dashboard">
+      <div class="welcome"><div><h2>Good day, Operator</h2><p>Here's what's happening in your parking lot.</p></div><div class="date-chip" id="today-date">Today</div></div>
+      <div class="stats">
+        <article class="stat-card"><div class="stat-top"><span>Occupied Slots</span><span class="stat-icon purple">▦</span></div><div class="stat-value" id="occupied-count">0 <small>/ 20</small></div><div class="stat-note"><span class="green-text">● Live</span> active vehicles</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Available Slots</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="available-count">20</div><div class="stat-note">Ready for incoming vehicles</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Today's Exits</span><span class="stat-icon orange">↗</span></div><div class="stat-value" id="exit-count">0</div><div class="stat-note">Completed parking sessions</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Today's Revenue</span><span class="stat-icon blue">₹</span></div><div class="stat-value" id="revenue-count">₹0</div><div class="stat-note">From completed bills</div></article>
+      </div>
+
+      <div class="content-grid">
+        <article class="panel parking-panel">
+          <div class="panel-heading"><div><h3>Parking Overview</h3><p>Current slot availability (Click an occupied slot to exit)</p></div><span class="subtle-badge" id="capacity-badge">20 total slots</span></div>
+          <div class="slot-grid" id="slot-grid"></div>
+          <div class="legend"><span><i class="legend-dot occupied-dot"></i>Occupied</span><span><i class="legend-dot available-dot"></i>Available</span></div>
+        </article>
+        <article class="panel quick-panel">
+          <div class="panel-heading"><div><h3>Quick Actions</h3><p>Common operations</p></div></div>
+          <button class="quick-action" data-go="entry"><span class="action-icon purple">＋</span><span><strong>Register vehicle</strong><small>Record a new arrival</small></span><b>→</b></button>
+          <button class="quick-action" data-go="exit"><span class="action-icon orange">↗</span><span><strong>Process exit</strong><small>Calculate parking bill</small></span><b>→</b></button>
+          <button class="quick-action" data-go="vehicles"><span class="action-icon blue">▤</span><span><strong>View records</strong><small>Search vehicle history</small></span><b>→</b></button>
+          <div class="rate-box"><strong>Hourly rates</strong><div><span>Two-wheeler</span><b>₹20 / hour</b></div><div><span>Four-wheeler</span><b>₹40 / hour</b></div><small>Every started hour is charged. Minimum 1 hour.</small></div>
+        </article>
+      </div>
+
+      <article class="panel table-panel">
+        <div class="panel-heading"><div><h3>Currently Parked</h3><p>Vehicles inside the parking area</p></div><button class="text-button" data-go="vehicles">View all records →</button></div>
+        <div class="table-wrap"><table><thead><tr><th>REGISTRATION</th><th>TYPE</th><th>SLOT</th><th>ENTRY TIME</th><th>STATUS</th></tr></thead><tbody id="recent-table"></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="page" id="page-entry">
+      <div class="section-intro"><h2>Vehicle Entry</h2><p>Register an arriving vehicle and assign a parking slot.</p></div>
+      <article class="panel form-panel">
+        <div class="form-title"><div class="big-icon purple">＋</div><div><h3>New parking session</h3><p>Enter the vehicle details below.</p></div></div>
+        <form id="entry-form">
+          <label for="registration">Vehicle registration number</label><input id="registration" name="registration" placeholder="e.g. MH12AB1234" required maxlength="20">
+          <label>Vehicle type</label><div class="type-options"><label class="type-option"><input type="radio" name="type" value="2" checked><span><b>🏍</b><strong>Two-wheeler</strong><small>₹20 / hour</small></span></label><label class="type-option"><input type="radio" name="type" value="4"><span><b>🚗</b><strong>Four-wheeler</strong><small>₹40 / hour</small></span></label></div>
+          <div class="form-actions"><button type="reset" class="btn secondary">Clear</button><button type="submit" class="btn primary">Register vehicle <span>→</span></button></div>
+        </form>
+        <div class="notice">Connected to C++ linked-list database (<code>parking_records.txt</code>). Slot assignment is managed dynamically.</div>
+      </article>
+    </section>
+
+    <section class="page" id="page-exit">
+      <div class="section-intro"><h2>Exit & Billing</h2><p>Complete a parking session and calculate the final charge.</p></div>
+      <article class="panel form-panel">
+        <div class="form-title"><div class="big-icon orange">↗</div><div><h3>Process vehicle exit</h3><p>Use the registration number to find the parked vehicle.</p></div></div>
+        <form id="exit-form">
+          <label for="exit-registration">Vehicle registration number</label><input id="exit-registration" placeholder="e.g. MH12AB1234" required>
+          <div class="form-actions"><button type="submit" class="btn primary">Find vehicle & calculate bill →</button></div>
+        </form>
+        <div id="bill-result" class="bill-result hidden"></div>
+        <div class="notice">Timestamps, simulated duration, and final bill are calculated live by the data structures engine.</div>
+      </article>
+    </section>
+
+    <section class="page" id="page-vehicles">
+      <div class="section-intro"><h2>Vehicle Records</h2><p>Search active and completed parking sessions from Doubly Linked List records.</p></div>
+      <article class="panel table-panel">
+        <div class="toolbar"><input id="search-input" placeholder="Search registration number..."><span id="record-total" class="subtle-badge">0 records</span></div>
+        <div class="table-wrap"><table><thead><tr><th>REGISTRATION</th><th>TYPE</th><th>SLOT</th><th>ENTRY TIME</th><th>CHARGE</th><th>STATUS</th></tr></thead><tbody id="records-table"></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="page" id="page-reports">
+      <div class="section-intro"><h2>Reports</h2><p>Daily activity and revenue summary.</p></div>
+      <div class="stats report-stats">
+        <article class="stat-card"><div class="stat-top"><span>Entries today</span><span class="stat-icon purple">＋</span></div><div class="stat-value" id="report-entries">0</div><div class="stat-note">Recorded arrivals</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Completed exits</span><span class="stat-icon orange">↗</span></div><div class="stat-value" id="report-exits">0</div><div class="stat-note">Closed sessions</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Cancellations</span><span class="stat-icon blue">×</span></div><div class="stat-value" id="report-cancel">0</div><div class="stat-note">Cancelled entries</div></article>
+        <article class="stat-card"><div class="stat-top"><span>Revenue</span><span class="stat-icon green">₹</span></div><div class="stat-value" id="report-revenue">₹0</div><div class="stat-note">Completed bills only</div></article>
+      </div>
+      <article class="panel report-note"><h3>Billing rules</h3><p>Two-wheelers: ₹20 per chargeable hour. Four-wheelers: ₹40 per chargeable hour. Each started hour is charged, with a minimum charge of one hour.</p><p class="muted">The C++ backend remains the persistent source of truth for records, timestamps, slot allocation, billing and reports via <code>parking_records.txt</code>.</p></article>
+    </section>
+
+    <footer>SmartPark <span>•</span> Smart Vehicle Parking & Billing System <span class="footer-right">Doubly Linked List Backend</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
